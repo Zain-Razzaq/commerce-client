@@ -66,6 +66,7 @@ export const updateOrderStatus = async (orderId) => {
   try {
     const response = await axios.patch(
       UPDATE_ORDER_STATUS_API_URL.replace(":id", orderId),
+      {},
       { withCredentials: true }
     );
     return {

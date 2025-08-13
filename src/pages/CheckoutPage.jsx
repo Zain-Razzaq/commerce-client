@@ -57,8 +57,8 @@ const CheckoutPage = () => {
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
 
-    if (!deliveryAddress.trim()) {
-      toast.error("Please enter a delivery address");
+    if (deliveryAddress.length < 6) {
+      toast.error("Delivery address must be at least 6 characters long");
       return;
     }
 

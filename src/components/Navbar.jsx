@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <nav className="bg-quaternary shadow-sm border-b border-secondary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -94,27 +94,32 @@ const Navbar = () => {
               </svg>
             </Link>
 
-            {/* Login Button or User Info */}
-            {isAuthenticated ? (
-              <div className="flex items-center space-x-3">
-                <span className="text-primary font-medium">
-                  Welcome, {user?.name}
-                </span>
-                <button
-                  onClick={logout}
-                  className="bg-secondary text-primary px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors font-medium"
+            {/* Login Button or User Info - Desktop Only */}
+            <div className="hidden md:flex items-center space-x-3">
+              {isAuthenticated ? (
+                <>
+                  <span className="text-primary font-medium">
+                    Welcome, {user?.name}
+                  </span>
+                  <button
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                    }}
+                    className="bg-secondary text-primary px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors font-medium"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium"
                 >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/login"
-                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors font-medium"
-              >
-                Login
-              </Link>
-            )}
+                  Login
+                </Link>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -199,6 +204,7 @@ const Navbar = () => {
                     onClick={() => {
                       logout();
                       setIsMobileMenuOpen(false);
+                      navigate("/");
                     }}
                     className="bg-secondary text-primary px-4 py-2 rounded-lg hover:bg-secondary/80 transition-colors font-medium text-left"
                   >
