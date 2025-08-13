@@ -168,9 +168,12 @@ const CartPage = () => {
 
               <div className="mt-6 space-y-3">
                 {user ? (
-                  <button className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                  <Link
+                    to="/checkout"
+                    className="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium block text-center"
+                  >
                     Proceed to Checkout
-                  </button>
+                  </Link>
                 ) : (
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600 text-center">

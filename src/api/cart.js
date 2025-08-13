@@ -81,7 +81,7 @@ export const getUserCart = async () => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to fetch user cart",
+      error: error.response?.data?.error || "Failed to fetch user cart",
     };
   }
 };
@@ -100,7 +100,7 @@ export const addToCart = async (productId, quantity = 1) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to add product to cart",
+      error: error.response?.data?.error || "Failed to add product to cart",
     };
   }
 };
@@ -119,7 +119,7 @@ export const updateCartItem = async (itemId, quantity) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to update cart item",
+      error: error.response?.data?.error || "Failed to update cart item",
     };
   }
 };
@@ -137,7 +137,7 @@ export const deleteCartItem = async (itemId) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to delete cart item",
+      error: error.response?.data?.error || "Failed to delete cart item",
     };
   }
 };
@@ -156,7 +156,7 @@ export const mergeCart = async (localCartItems) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to merge cart",
+      error: error.response?.data?.error || "Failed to merge cart",
     };
   }
 };

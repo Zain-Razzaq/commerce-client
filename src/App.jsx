@@ -10,6 +10,9 @@ import {
   AddProductPage,
   EditProductPage,
   CartPage,
+  CheckoutPage,
+  AllOrdersPage,
+  UserOrdersPage,
 } from "./pages";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
@@ -30,6 +33,9 @@ function App() {
             <Route path="/products/add" element={<AddProductPage />} />
             <Route path="/products/edit/:id" element={<EditProductPage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/orders" element={<UserOrdersPage />} />
+            <Route path="/admin/orders" element={<AllOrdersPage />} />
           </Routes>
         </BrowserRouter>
         <Toaster />

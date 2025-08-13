@@ -18,17 +18,59 @@ const Navbar = () => {
           {/* Navigation Items */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/categories"
-              className="text-primary hover:text-primary/80 font-medium transition-colors"
-            >
-              Categories
-            </Link>
-            <Link
               to="/products"
               className="text-primary hover:text-primary/80 font-medium transition-colors"
             >
               All Products
             </Link>
+            {isAuthenticated && (
+              <Link
+                to="/orders"
+                className="text-primary hover:text-primary/80 font-medium transition-colors"
+              >
+                My Orders
+              </Link>
+            )}
+            {isAuthenticated && user.is_admin && (
+              <div className="relative group">
+                <button className="text-primary hover:text-primary/80 font-medium transition-colors flex items-center">
+                  Admin
+                  <svg
+                    className="w-4 h-4 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-secondary/20 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <Link
+                    to="/admin/orders"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                  >
+                    Manage Orders
+                  </Link>
+                  <Link
+                    to="/categories"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                  >
+                    Manage Categories
+                  </Link>
+                  <Link
+                    to="/products/add"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                  >
+                    Add Product
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center space-x-4">
@@ -51,42 +93,6 @@ const Navbar = () => {
                 />
               </svg>
             </Link>
-
-            {/* Admin Dropdown */}
-            {isAuthenticated && user?.role === "admin" && (
-              <div className="relative group">
-                <button className="text-primary hover:text-primary/80 font-medium transition-colors flex items-center">
-                  Admin
-                  <svg
-                    className="w-4 h-4 ml-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-secondary/20 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <Link
-                    to="/admin/categories"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    Manage Categories
-                  </Link>
-                  <Link
-                    to="/admin/products/add"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    Add Product
-                  </Link>
-                </div>
-              </div>
-            )}
 
             {/* Login Button or User Info */}
             {isAuthenticated ? (
@@ -141,32 +147,41 @@ const Navbar = () => {
           <div className="md:hidden pb-4 border-t border-secondary/20 pt-4">
             <div className="flex flex-col space-y-3">
               <Link
-                to="/categories"
-                className="text-primary hover:text-primary/80 font-medium transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Categories
-              </Link>
-              <Link
                 to="/products"
                 className="text-primary hover:text-primary/80 font-medium transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 All Products
               </Link>
+              {isAuthenticated && (
+                <Link
+                  to="/orders"
+                  className="text-primary hover:text-primary/80 font-medium transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  My Orders
+                </Link>
+              )}
               {/* Admin Links for Mobile */}
-              {isAuthenticated && user?.role === "admin" && (
+              {isAuthenticated && user.is_admin && (
                 <div className="border-t border-secondary/20 pt-3 mt-3">
                   <div className="text-sm text-gray-500 mb-2">Admin</div>
                   <Link
-                    to="/admin/categories"
+                    to="/admin/orders"
+                    className="text-primary hover:text-primary/80 font-medium transition-colors block mb-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Manage Orders
+                  </Link>
+                  <Link
+                    to="/categories"
                     className="text-primary hover:text-primary/80 font-medium transition-colors block mb-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Manage Categories
                   </Link>
                   <Link
-                    to="/admin/products/add"
+                    to="/products/add"
                     className="text-primary hover:text-primary/80 font-medium transition-colors block"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
