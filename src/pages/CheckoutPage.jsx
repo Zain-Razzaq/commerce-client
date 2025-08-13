@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import toast from "react-hot-toast";
 import { getUserCart, clearLocalCart } from "@/api/cart";
-import { getProductsByIds } from "@/api/products";
 import { createOrder } from "@/api/orders";
 
 const CheckoutPage = () => {
@@ -19,7 +18,7 @@ const CheckoutPage = () => {
       setLoading(true);
       try {
         let cartItems = [];
-
+        if (authLoading) return;
         const response = await getUserCart();
         if (response.success) {
           cartItems = response.data;
@@ -31,19 +30,7 @@ const CheckoutPage = () => {
           return;
         }
 
-        const productsResponse = await getProductsByIds(
-          cartItems.map((item) => item.id)
-        );
-
-        if (productsResponse.success) {
-          // Add quantity to products
-          const productsWithQuantity = productsResponse.data.map((product) => ({
-            ...product,
-            quantity: cartItems.find((item) => item.id === product.id)
-              .quantity,
-          }));
-          setCartProducts(productsWithQuantity);
-        }
+        setCartProducts(cartItems);
       } catch {
         toast.error("Failed to load cart");
         navigate("/cart");

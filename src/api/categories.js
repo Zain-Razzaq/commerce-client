@@ -16,7 +16,7 @@ export const getAllCategories = async () => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -30,7 +30,7 @@ export const createCategory = async (category) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -48,7 +48,7 @@ export const updateCategory = async (id, category) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -65,6 +65,6 @@ export const deleteCategory = async (id) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };

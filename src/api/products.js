@@ -23,7 +23,7 @@ export const getAllProducts = async (page = 1) => {
       pagination: response.data.pagination,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error};
   }
 };
 
@@ -38,7 +38,7 @@ export const getProductById = async (id) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -55,7 +55,7 @@ export const createProduct = async (product) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -76,7 +76,7 @@ export const updateProduct = async (id, product) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -91,7 +91,7 @@ export const deleteProduct = async (id) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -119,7 +119,7 @@ export const searchProducts = async (
       pagination: response.data.pagination,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -141,7 +141,7 @@ export const getProductsByIds = async (productIds) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response?.data?.message || "Failed to fetch products",
+      error: error.response?.data?.error || "Failed to fetch products",
     };
   }
 };

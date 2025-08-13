@@ -13,7 +13,7 @@ export const loginApi = async (email, password) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -29,7 +29,7 @@ export const signupApi = async (name, email, password) => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };
 
@@ -41,6 +41,6 @@ export const logoutApi = async () => {
       data: response.data,
     };
   } catch (error) {
-    return { success: false, error: error.response.data.message };
+    return { success: false, error: error.response.data.error };
   }
 };

@@ -8,7 +8,7 @@ import { getLocalCart, getUserCart } from "@/api/cart";
 import { getProductsByIds } from "@/api/products";
 
 const CartPage = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [cartProducts, setCartProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,7 @@ const CartPage = () => {
     setLoading(true);
     try {
       let cartItems = [];
-
+      if (authLoading) return;
       if (user) {
         // Get cart from API for logged-in users
         const response = await getUserCart();
@@ -49,7 +49,7 @@ const CartPage = () => {
 
   useEffect(() => {
     loadCart();
-  }, [user]);
+  }, [user, authLoading]);
 
   const getCartTotal = () => {
     let total = 0;
