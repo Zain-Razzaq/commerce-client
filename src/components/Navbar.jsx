@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <nav className="bg-quaternary shadow-sm border-b border-secondary/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +33,10 @@ const Navbar = () => {
 
           <div className="flex items-center space-x-4">
             {/* Cart Icon */}
-            <button className="relative p-2 text-primary hover:text-primary/80 transition-colors">
+            <Link
+              to="/cart"
+              className="relative p-2 text-primary hover:text-primary/80 transition-colors"
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -46,10 +50,7 @@ const Navbar = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4m-2.4 8l1 5h11M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
                 />
               </svg>
-              <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
-              </span>
-            </button>
+            </Link>
 
             {/* Admin Dropdown */}
             {isAuthenticated && user?.role === "admin" && (

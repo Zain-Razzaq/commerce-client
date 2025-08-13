@@ -1,11 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAuth } from "@/context/AuthContext";
+import { addToLocalCart, addToCart } from "@/api/cart";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
+
+    try {
+      if (user) {
+        const response = await addToCart(product.id, 1);
+        if (response.success) {
+          toast.success("Product added to cart!");
+        } else {
+          toast.error("Failed to add product to cart");
+        }
+      } else {
+        addToLocalCart(product.id, 1);
+        toast.success("Product added to cart!");
+      }
+    } catch {
+      toast.error("Failed to add product to cart");
+    }
   };
 
   return (
@@ -83,11 +106,7 @@ const ProductCard = ({ product }) => {
               : "bg-secondary text-gray-500 cursor-not-allowed"
           }`}
           disabled={product.stock === 0}
-          onClick={(e) => {
-            e.stopPropagation();
-            
-            toast.success(`Added product ${product.id} to cart`);
-          }}
+          onClick={handleAddToCart}
         >
           {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
         </button>

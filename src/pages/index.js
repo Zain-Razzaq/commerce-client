@@ -6,6 +6,7 @@ import ProductDetailPage from "./ProductDetailPage";
 import CategoriesPage from "./CategoriesPage";
 import AddProductPage from "./AddProductPage";
 import EditProductPage from "./EditProductPage";
+import CartPage from "./CartPage";
 
 export {
   HomePage,
@@ -16,4 +17,5 @@ export {
   CategoriesPage,
   AddProductPage,
   EditProductPage,
+  CartPage,
 };

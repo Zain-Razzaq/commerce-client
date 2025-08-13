@@ -6,16 +6,21 @@ import {
   UPDATE_PRODUCT_API_URL,
   DELETE_PRODUCT_API_URL,
   SEARCH_PRODUCTS_API_URL,
+  GET_PRODUCTS_BY_IDS_API_URL,
 } from "@/routes";
 
-export const getAllProducts = async () => {
+export const getAllProducts = async (page = 1) => {
   try {
     const response = await axios.get(ALL_PRODUCT_API_URL, {
       withCredentials: true,
+      params: {
+        page: page,
+      },
     });
     return {
       success: true,
-      data: response.data,
+      data: response.data.products,
+      pagination: response.data.pagination,
     };
   } catch (error) {
     return { success: false, error: error.response.data.message };
@@ -91,10 +96,11 @@ export const deleteProduct = async (id) => {
 };
 
 export const searchProducts = async (
-  searchTerm,
-  categoryId,
-  minPrice,
-  maxPrice
+  searchTerm = "",
+  categoryId = "",
+  minPrice = "",
+  maxPrice = "",
+  page = 1
 ) => {
   try {
     const response = await axios.get(SEARCH_PRODUCTS_API_URL, {
@@ -104,13 +110,38 @@ export const searchProducts = async (
         category_id: categoryId,
         min_price: minPrice,
         max_price: maxPrice,
+        page: page,
       },
     });
     return {
       success: true,
       data: response.data.products,
+      pagination: response.data.pagination,
     };
   } catch (error) {
     return { success: false, error: error.response.data.message };
+  }
+};
+
+export const getProductsByIds = async (productIds) => {
+  try {
+    const response = await axios.post(
+      GET_PRODUCTS_BY_IDS_API_URL,
+      {
+        ids: productIds,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.response?.data?.message || "Failed to fetch products",
+    };
   }
 };

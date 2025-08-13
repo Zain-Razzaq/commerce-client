@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginApi, signupApi } from "@/api/auth";
+import { loginApi, signupApi, logoutApi } from "@/api/auth";
 import toast from "react-hot-toast";
+import { mergeCart, getLocalCart, clearLocalCart } from "@/api/cart";
 
 const AuthContext = createContext();
 
@@ -10,6 +11,14 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
+};
+
+const MergeCart = async () => {
+  const localCart = getLocalCart();
+  const response = await mergeCart(localCart);
+  if (response.success) {
+    clearLocalCart();
+  }
 };
 
 export const AuthProvider = ({ children }) => {
@@ -29,6 +38,7 @@ export const AuthProvider = ({ children }) => {
     if (response.success) {
       setUser(response.data);
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      MergeCart();
       toast.success("Login successful");
     } else {
       toast.error(response.error);
@@ -41,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     if (response.success) {
       setUser(response.data);
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      MergeCart();
       toast.success("Signup successful");
     } else {
       toast.error(response.error);
@@ -48,10 +59,16 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("userInfo");
-    toast.success("Logout successful");
+  const logout = async () => {
+    const response = await logoutApi();
+    if (response.success) {
+      setUser(null);
+      clearLocalCart();
+      localStorage.removeItem("userInfo");
+      toast.success("Logout successful");
+    } else {
+      toast.error(response.error);
+    }
   };
 
   const value = {

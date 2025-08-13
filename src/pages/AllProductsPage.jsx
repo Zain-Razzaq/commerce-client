@@ -6,6 +6,7 @@ import { searchProducts } from "@/api/products";
 import { getAllCategories } from "@/api/categories";
 
 import ProductsList from "@/components/ProductsList";
+import Pagination from "@/components/Pagination";
 
 const AllProductsPage = () => {
   const { search } = useParams();
@@ -16,6 +17,8 @@ const AllProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -25,10 +28,12 @@ const AllProductsPage = () => {
             searchTerm,
             selectedCategory,
             minPrice,
-            maxPrice
+            maxPrice,
+            currentPage
           );
           if (productsResponse.success) {
             setAllProducts(productsResponse.data);
+            setPagination(productsResponse.pagination);
           } else {
             toast.error(productsResponse.error);
           }
@@ -41,7 +46,7 @@ const AllProductsPage = () => {
         clearTimeout(timeout);
       };
     }, 1000);
-  }, [searchTerm, selectedCategory, minPrice, maxPrice]);
+  }, [searchTerm, selectedCategory, minPrice, maxPrice, currentPage]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -60,8 +65,18 @@ const AllProductsPage = () => {
     setSelectedCategory("");
     setMinPrice("");
     setMaxPrice("");
+    setCurrentPage(1);
     navigate("/products", { replace: true });
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, minPrice, maxPrice]);
 
   return (
     <div className="min-h-screen bg-quaternary">
@@ -69,9 +84,6 @@ const AllProductsPage = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-primary mb-4">All Products</h1>
-          <p className="text-gray-600">
-            Showing {allProducts.length} of {allProducts.length} products
-          </p>
         </div>
 
         {/* Filters and Search Bar */}
@@ -84,7 +96,7 @@ const AllProductsPage = () => {
               </label>
               <input
                 type="text"
-                placeholder="Search by name or description..."
+                placeholder="Search by name"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-3 py-2 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
@@ -147,7 +159,13 @@ const AllProductsPage = () => {
 
         {/* Products Grid */}
         {allProducts.length > 0 ? (
-          <ProductsList products={allProducts} />
+          <>
+            <ProductsList products={allProducts} />
+            <Pagination
+              pagination={pagination}
+              onPageChange={handlePageChange}
+            />
+          </>
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg mb-4">

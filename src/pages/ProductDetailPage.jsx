@@ -6,6 +6,7 @@ import { getProductById, deleteProduct } from "@/api/products";
 import { useAuth } from "@/context/AuthContext";
 
 import ImageGallery from "@/components/ImageGallery";
+import { addToLocalCart, addToCart } from "@/api/cart";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -48,8 +49,22 @@ const ProductDetailPage = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    toast.success(`Added ${quantity} of product ${product.id} to cart`);
+  const handleAddToCart = async () => {
+    try {
+      if (user) {
+        const response = await addToCart(product.id, quantity);
+        if (response.success) {
+          toast.success(`Added ${quantity} of product ${product.id} to cart`);
+        } else {
+          toast.error(response.error);
+        }
+      } else {
+        addToLocalCart(product.id, quantity);
+        toast.success(`Added ${quantity} of product ${product.id} to cart`);
+      }
+    } catch {
+      toast.error("Failed to add product to cart");
+    }
   };
 
   const handleEdit = () => {
